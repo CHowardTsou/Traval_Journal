@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+}
+
+.app{
+    width: 550px;
+    margin: 0 auto;
+    
+}
+
+nav {
+    background: #F55A5A;
+    height: 55px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: 700;
+    margin-top: 0;
+    color: #2B283A;
+}
+
+h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: -0.075em;
+    padding: 20px;
+    color: #ffffff;
+}
+
+h3 {
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    letter-spacing: 0.17em;
+    margin-left: 5px;
+}
+
+a {
+    font-size: 10px;
+    color: #918E9B;
+    margin-left: 12px;
+}
+
+.fa-location-dot {
+    color: #F55A5A;
+
+}
+
+.fa-earth-americas {
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+.card {
+    display: flex;
+    width: 470px;
+    height: 170px;
+    margin: 50px auto;
+    align-items: center;
+}
+
+.card img {
+    width: 125px;
+    height: 170px;
+    object-fit: cover; /** to make image ratio correct **/
+    border-radius: 5px;
+}
+
+.card-right {
+    margin-left: 20px;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+}
+
+.date {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.description {
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+
+
+
+}
