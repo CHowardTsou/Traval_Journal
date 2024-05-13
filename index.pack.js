@@ -475,6 +475,9 @@ function App() {
                     return handleDragStart(e, index);
                 },
                 onMouseUp: handleDragEnd,
+                onDrop: function onDrop(e) {
+                    return handleDrop(e);
+                },
                 onTouchStart: function onTouchStart() {
                     return handleTouchStart(index);
                 },
@@ -488,9 +491,7 @@ function App() {
     });
     return _react2.default.createElement(
         'div',
-        { className: 'app', onDrop: function onDrop(e) {
-                return handleDrop(e);
-            } },
+        { className: 'app' },
         _react2.default.createElement(_Navbar2.default, null),
         list
     );

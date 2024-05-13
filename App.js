@@ -53,6 +53,7 @@ export default function App() {
                                         key={index}
                                         onMouseDown={(e) => handleDragStart(e, index)}
                                         onMouseUp={handleDragEnd}
+                                        onDrop={(e) => handleDrop(e)}
                                         onTouchStart={() => handleTouchStart(index)}
                                         onTouchMove={handleTouchMove}
                                         onTouchEnd={() => handleTouchEnd(index)}
@@ -60,7 +61,7 @@ export default function App() {
                                     <Card key={item.id} item={item}/>
                                 </div>) )
     return(
-        <div className="app" onDrop={(e) => handleDrop(e)}>
+        <div className="app" >
             <Navbar />
             {list}
         </div>
