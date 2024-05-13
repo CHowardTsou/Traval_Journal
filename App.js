@@ -9,7 +9,7 @@ export default function App() {
     const draggedItemIndex = React.useRef(null);
 
     const handleDragStart = (e, index) => {
-        e.dataTransfer.setData('text/plain', ''); // Required for some browsers
+        e.dataTransfer.setData('index'); // Required for some browsers
         draggedItemIndex.current = index;
       };
     
