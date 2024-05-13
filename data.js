@@ -1,7 +1,7 @@
 export default [
     {
         id: 1,
-        title: "Mount Fujii",
+        title: "Mount Fuji",
         location: "Japan",
         googleMapsUrl: "https://goo.gl/maps/1DGM5WrWnATgkSNB8",
         startDate: "12 Jan, 2021",
