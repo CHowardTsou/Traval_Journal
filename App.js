@@ -6,7 +6,7 @@ import data from './data'
 
 export default function App() {
     const [items, setItems] = React.useState(data)
-    const [draggedIndex, setDraggedIndex] = useState(null);
+    const [draggedIndex, setDraggedIndex] = React.useState(null);
 
     const handleDragStart = (e, index) => {
         e.dataTransfer.setData('index', index);
