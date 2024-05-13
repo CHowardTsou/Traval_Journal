@@ -11,8 +11,8 @@ export default function App() {
     const handleDragStart = (e, index) => {
         if (e.dataTransfer) { // Check if dataTransfer exists
             e.dataTransfer.setData('text/plain', ''); // Required for some browsers
-            draggedItemIndex.current = index;
-          }
+        }
+        draggedItemIndex.current = index;
       };
     
     const handleDragEnd = (e) => {

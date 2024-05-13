@@ -430,8 +430,8 @@ function App() {
         if (e.dataTransfer) {
             // Check if dataTransfer exists
             e.dataTransfer.setData('text/plain', ''); // Required for some browsers
-            draggedItemIndex.current = index;
         }
+        draggedItemIndex.current = index;
     };
 
     var handleDragEnd = function handleDragEnd(e) {
