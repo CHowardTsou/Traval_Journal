@@ -5,34 +5,32 @@ import data from './data'
 
 
 export default function App() {
-    const [draggedItem, setDraggedItem] = useState(null);
+    const [items, setItems] = React.useState(data)
 
-    const handleDragStart = (e, item) => {
-        setDraggedItem(item);
-    };
-
-    const handleDragEnd = () => {
-        setDraggedItem(null);
-    };
-
-    const handleDragOver = (e) => {
+    const handleDragStart = (e, index) => {
+        e.dataTransfer.setData('index', index);
+      };
+    
+      const handleDragOver = (e) => {
         e.preventDefault();
-    };
-
-    const handleDrop = (e, target) => {
+      };
+    
+      const handleDrop = (e, index) => {
         e.preventDefault();
-        // Perform any necessary logic with draggedItem and target
-        console.log('Dropped item:', draggedItem);
-        console.log('Target:', target);
-        setDraggedItem(null);
-    };
+        const droppedIndex = e.dataTransfer.getData('index');
+        const newItems = [...items];
+        const temp = newItems[index];
+        newItems[index] = newItems[droppedIndex];
+        newItems[droppedIndex] = temp;
+        setItems(newItems);
+      };
 
-    const list = data.map(item => (<div className='item' 
+    const list = items.map((item,index) => (<div className='item' 
                                         draggable
-                                        onDragStart={(e) => handleDragStart(e, 'draggedItem')}
-                                        onTouchStart={(e) => handleDragStart(e, 'draggedItem1')}
-                                        onDragEnd={handleDragEnd}
-                                        onTouchEnd={handleDragEnd}> 
+                                        key={index}
+                                        onDragStart={(e) => handleDragStart(e, index)}
+                                        onDragOver={handleDragOver}
+                                        onDrop={(e) => handleDrop(e, index)}> 
                                     <Card key={item.id} item={item}/>
                                 </div>) )
     return(
