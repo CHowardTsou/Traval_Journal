@@ -6,6 +6,7 @@ import data from './data'
 
 export default function App() {
     const [items, setItems] = React.useState(data)
+    const [draggedIndex, setDraggedIndex] = useState(null);
 
     const handleDragStart = (e, index) => {
         e.dataTransfer.setData('index', index);
@@ -25,13 +26,35 @@ export default function App() {
         setItems(newItems);
       };
 
+      const handleTouchStart = (index) => {
+        setDraggedIndex(index);
+      };
+    
+      const handleTouchMove = (e) => {
+        e.preventDefault();
+      };
+    
+      const handleTouchEnd = (index) => {
+        if (draggedIndex !== null && draggedIndex !== index) {
+          const newItems = [...items];
+          const temp = newItems[index];
+          newItems[index] = newItems[draggedIndex];
+          newItems[draggedIndex] = temp;
+          setItems(newItems);
+        }
+        setDraggedIndex(null);
+      };
+
     const list = items.map((item,index) => (<div className='item' 
                                         draggable
                                         key={index}
                                         onDragStart={(e) => handleDragStart(e, index)}
-                                        onTouchStart={(e) => handleDragStart(e, index)}
                                         onDragOver={handleDragOver}
-                                        onDrop={(e) => handleDrop(e, index)}> 
+                                        onDrop={(e) => handleDrop(e, index)}
+                                        onTouchStart={() => handleTouchStart(index)}
+                                        onTouchMove={handleTouchMove}
+                                        onTouchEnd={() => handleTouchEnd(index)}
+                                        > 
                                     <Card key={item.id} item={item}/>
                                 </div>) )
     return(

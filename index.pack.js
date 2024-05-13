@@ -391,7 +391,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -419,54 +419,83 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function App() {
-    var _React$useState = _react2.default.useState(_data2.default),
-        _React$useState2 = _slicedToArray(_React$useState, 2),
-        items = _React$useState2[0],
-        setItems = _React$useState2[1];
+  var _React$useState = _react2.default.useState(_data2.default),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      items = _React$useState2[0],
+      setItems = _React$useState2[1];
 
-    var handleDragStart = function handleDragStart(e, index) {
-        e.dataTransfer.setData('index', index);
-    };
+  var _useState = useState(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      draggedIndex = _useState2[0],
+      setDraggedIndex = _useState2[1];
 
-    var handleDragOver = function handleDragOver(e) {
-        e.preventDefault();
-    };
+  var handleDragStart = function handleDragStart(e, index) {
+    e.dataTransfer.setData('index', index);
+  };
 
-    var handleDrop = function handleDrop(e, index) {
-        e.preventDefault();
-        var droppedIndex = e.dataTransfer.getData('index');
-        var newItems = [].concat(_toConsumableArray(items));
-        var temp = newItems[index];
-        newItems[index] = newItems[droppedIndex];
-        newItems[droppedIndex] = temp;
-        setItems(newItems);
-    };
+  var handleDragOver = function handleDragOver(e) {
+    e.preventDefault();
+  };
 
-    var list = items.map(function (item, index) {
-        return _react2.default.createElement(
-            'div',
-            { className: 'item',
-                draggable: true,
-                key: index,
-                onDragStart: function onDragStart(e) {
-                    return handleDragStart(e, index);
-                },
-                onTouchStart: function onTouchStart(e) {
-                    return handleDragStart(e, index);
-                },
-                onDragOver: handleDragOver,
-                onDrop: function onDrop(e) {
-                    return handleDrop(e, index);
-                } },
-            _react2.default.createElement(_Card2.default, { key: item.id, item: item })
-        );
-    });
+  var handleDrop = function handleDrop(e, index) {
+    e.preventDefault();
+    var droppedIndex = e.dataTransfer.getData('index');
+    var newItems = [].concat(_toConsumableArray(items));
+    var temp = newItems[index];
+    newItems[index] = newItems[droppedIndex];
+    newItems[droppedIndex] = temp;
+    setItems(newItems);
+  };
+
+  var handleTouchStart = function handleTouchStart(index) {
+    setDraggedIndex(index);
+  };
+
+  var handleTouchMove = function handleTouchMove(e) {
+    e.preventDefault();
+  };
+
+  var handleTouchEnd = function handleTouchEnd(index) {
+    if (draggedIndex !== null && draggedIndex !== index) {
+      var newItems = [].concat(_toConsumableArray(items));
+      var temp = newItems[index];
+      newItems[index] = newItems[draggedIndex];
+      newItems[draggedIndex] = temp;
+      setItems(newItems);
+    }
+    setDraggedIndex(null);
+  };
+
+  var list = items.map(function (item, index) {
     return _react2.default.createElement(
-        'div',
-        { className: 'app' },
-        _react2.default.createElement(_Navbar2.default, null),
-        list
+      'div',
+      { className: 'item',
+        draggable: true,
+        key: index,
+        onDragStart: function onDragStart(e) {
+          return handleDragStart(e, index);
+        },
+        onDragOver: handleDragOver,
+        onDrop: function onDrop(e) {
+          return handleDrop(e, index);
+        },
+        onTouchStart: function onTouchStart() {
+          return handleTouchStart(index);
+        },
+        onTouchMove: handleTouchMove,
+        onTouchEnd: function onTouchEnd() {
+          return handleTouchEnd(index);
+        }
+      },
+      _react2.default.createElement(_Card2.default, { key: item.id, item: item })
     );
+  });
+  return _react2.default.createElement(
+    'div',
+    { className: 'app' },
+    _react2.default.createElement(_Navbar2.default, null),
+    list
+  );
 }
 
 /***/ }),
