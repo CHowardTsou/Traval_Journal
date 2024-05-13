@@ -34,7 +34,7 @@ export default function App() {
       const handleTouchMove = (e) => {
         e.preventDefault();
       };
-    
+      
       const handleTouchEnd = (index) => {
         if (draggedIndex !== null && draggedIndex !== index) {
           const newItems = [...items];
@@ -53,7 +53,7 @@ export default function App() {
                                         onDragOver={handleDragOver}
                                         onDrop={(e) => handleDrop(e, index)}
                                         onTouchStart={() => handleTouchStart(index)}
-                                        onTouchMove={handleTouchMove}
+                                        onTouchMove={(e) => handleTouchMove(e)}
                                         onTouchEnd={() => handleTouchEnd(index)}
                                         > 
                                     <Card key={item.id} item={item}/>

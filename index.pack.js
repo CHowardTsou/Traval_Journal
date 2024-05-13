@@ -483,7 +483,9 @@ function App() {
         onTouchStart: function onTouchStart() {
           return handleTouchStart(index);
         },
-        onTouchMove: handleTouchMove,
+        onTouchMove: function onTouchMove(e) {
+          return handleTouchMove(e);
+        },
         onTouchEnd: function onTouchEnd() {
           return handleTouchEnd(index);
         }
