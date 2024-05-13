@@ -424,10 +424,10 @@ function App() {
       items = _React$useState2[0],
       setItems = _React$useState2[1];
 
-  var _useState = useState(null),
-      _useState2 = _slicedToArray(_useState, 2),
-      draggedIndex = _useState2[0],
-      setDraggedIndex = _useState2[1];
+  var _React$useState3 = _react2.default.useState(null),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      draggedIndex = _React$useState4[0],
+      setDraggedIndex = _React$useState4[1];
 
   var handleDragStart = function handleDragStart(e, index) {
     e.dataTransfer.setData('index', index);
