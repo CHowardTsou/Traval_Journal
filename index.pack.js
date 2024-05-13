@@ -440,6 +440,7 @@ function App() {
 
     var handleDrop = function handleDrop(e, index) {
         if (draggedItemIndex.current !== null) {
+            var droppedIndex = parseInt(e.dataTransfer.getData('index'), 10); // Parse data to integer
             var newItems = [].concat(_toConsumableArray(items));
             var temp = newItems[index];
             newItems[index] = newItems[draggedItemIndex.current];
@@ -484,7 +485,9 @@ function App() {
     });
     return _react2.default.createElement(
         'div',
-        { className: 'app' },
+        { className: 'app', onDrop: function onDrop(e) {
+                return handleDrop(e);
+            } },
         _react2.default.createElement(_Navbar2.default, null),
         list
     );

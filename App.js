@@ -22,6 +22,7 @@ export default function App() {
     
       const handleDrop = (e, index) => {
         if (draggedItemIndex.current !== null) {
+            const droppedIndex = parseInt(e.dataTransfer.getData('index'), 10); // Parse data to integer
             const newItems = [...items];
             const temp = newItems[index];
             newItems[index] = newItems[draggedItemIndex.current];
@@ -57,7 +58,7 @@ export default function App() {
                                     <Card key={item.id} item={item}/>
                                 </div>) )
     return(
-        <div className="app">
+        <div className="app" onDrop={(e) => handleDrop(e)}>
             <Navbar />
             {list}
         </div>
