@@ -9,6 +9,7 @@ export default function App() {
     const [draggedIndex, setDraggedIndex] = React.useState(null);
 
     const handleDragStart = (e, index) => {
+        e.preventDefault()
         e.dataTransfer.setData('index', index);
       };
     

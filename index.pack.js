@@ -430,6 +430,7 @@ function App() {
       setDraggedIndex = _React$useState4[1];
 
   var handleDragStart = function handleDragStart(e, index) {
+    e.preventDefault();
     e.dataTransfer.setData('index', index);
   };
 
