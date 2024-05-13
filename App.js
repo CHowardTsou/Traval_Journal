@@ -29,6 +29,7 @@ export default function App() {
                                         draggable
                                         key={index}
                                         onDragStart={(e) => handleDragStart(e, index)}
+                                        onTouchStart={(e) => handleDragStart(e, index)}
                                         onDragOver={handleDragOver}
                                         onDrop={(e) => handleDrop(e, index)}> 
                                     <Card key={item.id} item={item}/>

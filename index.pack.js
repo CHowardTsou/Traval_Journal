@@ -451,6 +451,9 @@ function App() {
                 onDragStart: function onDragStart(e) {
                     return handleDragStart(e, index);
                 },
+                onTouchStart: function onTouchStart(e) {
+                    return handleDragStart(e, index);
+                },
                 onDragOver: handleDragOver,
                 onDrop: function onDrop(e) {
                     return handleDrop(e, index);
@@ -618,7 +621,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = [{
     id: 1,
-    title: "Mount Fujii",
+    title: "Mount Fuji",
     location: "Japan",
     googleMapsUrl: "https://goo.gl/maps/1DGM5WrWnATgkSNB8",
     startDate: "12 Jan, 2021",
