@@ -6,54 +6,52 @@ import data from './data'
 
 export default function App() {
     const [items, setItems] = React.useState(data)
-    const [draggedIndex, setDraggedIndex] = React.useState(null);
+    const draggedItemIndex = React.useRef(null);
 
     const handleDragStart = (e, index) => {
-        e.preventDefault()
-        e.dataTransfer.setData('index', index);
+        e.dataTransfer.setData('text/plain', ''); // Required for some browsers
+        draggedItemIndex.current = index;
       };
     
-      const handleDragOver = (e) => {
-        e.preventDefault();
+    const handleDragEnd = (e) => {
+        draggedItemIndex.current = null;
       };
+    //   const handleDragOver = (e) => {
+    //     e.preventDefault();
+    //   };
     
       const handleDrop = (e, index) => {
-        e.preventDefault();
-        const droppedIndex = e.dataTransfer.getData('index');
-        const newItems = [...items];
-        const temp = newItems[index];
-        newItems[index] = newItems[droppedIndex];
-        newItems[droppedIndex] = temp;
-        setItems(newItems);
+        if (draggedItemIndex.current !== null) {
+            const newItems = [...items];
+            const temp = newItems[index];
+            newItems[index] = newItems[draggedItemIndex.current];
+            newItems[draggedItemIndex.current] = temp;
+            setItems(newItems);
+          }
       };
 
       const handleTouchStart = (index) => {
-        setDraggedIndex(index);
+        draggedItemIndex.current = index;
       };
     
       const handleTouchMove = (e) => {
-        e.preventDefault();
+        
       };
       
       const handleTouchEnd = (index) => {
-        if (draggedIndex !== null && draggedIndex !== index) {
-          const newItems = [...items];
-          const temp = newItems[index];
-          newItems[index] = newItems[draggedIndex];
-          newItems[draggedIndex] = temp;
-          setItems(newItems);
-        }
-        setDraggedIndex(null);
+        if (draggedItemIndex.current !== null && draggedItemIndex.current !== index) {
+            // Handle item reordering
+          }
+          draggedItemIndex.current = null;
       };
 
     const list = items.map((item,index) => (<div className='item' 
                                         draggable
                                         key={index}
-                                        onDragStart={(e) => handleDragStart(e, index)}
-                                        onDragOver={handleDragOver}
-                                        onDrop={(e) => handleDrop(e, index)}
+                                        onMouseDown={(e) => handleDragStart(e, index)}
+                                        onMouseUp={handleDragEnd}
                                         onTouchStart={() => handleTouchStart(index)}
-                                        onTouchMove={(e) => handleTouchMove(e)}
+                                        onTouchMove={handleTouchMove}
                                         onTouchEnd={() => handleTouchEnd(index)}
                                         > 
                                     <Card key={item.id} item={item}/>
