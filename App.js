@@ -9,8 +9,10 @@ export default function App() {
     const draggedItemIndex = React.useRef(null);
 
     const handleDragStart = (e, index) => {
-        e.dataTransfer.setData('index'); // Required for some browsers
-        draggedItemIndex.current = index;
+        if (e.dataTransfer) { // Check if dataTransfer exists
+            e.dataTransfer.setData('text/plain', ''); // Required for some browsers
+            draggedItemIndex.current = index;
+          }
       };
     
     const handleDragEnd = (e) => {

@@ -427,8 +427,11 @@ function App() {
     var draggedItemIndex = _react2.default.useRef(null);
 
     var handleDragStart = function handleDragStart(e, index) {
-        e.dataTransfer.setData('index'); // Required for some browsers
-        draggedItemIndex.current = index;
+        if (e.dataTransfer) {
+            // Check if dataTransfer exists
+            e.dataTransfer.setData('text/plain', ''); // Required for some browsers
+            draggedItemIndex.current = index;
+        }
     };
 
     var handleDragEnd = function handleDragEnd(e) {
