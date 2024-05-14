@@ -391,7 +391,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -419,82 +419,106 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function App() {
-    var _React$useState = _react2.default.useState(_data2.default),
-        _React$useState2 = _slicedToArray(_React$useState, 2),
-        items = _React$useState2[0],
-        setItems = _React$useState2[1];
+  var _React$useState = _react2.default.useState(_data2.default),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      items = _React$useState2[0],
+      setItems = _React$useState2[1];
 
-    var draggedItemIndex = _react2.default.useRef(null);
+  var draggedItemIndex = _react2.default.useRef(null);
+  var touchStartY = _react2.default.useRef(null);
 
-    var handleDragStart = function handleDragStart(e, index) {
-        if (e.dataTransfer) {
-            // Check if dataTransfer exists
-            e.dataTransfer.setData('text/plain', ''); // Required for some browsers
-        }
-        draggedItemIndex.current = index;
-    };
+  var handleDragStart = function handleDragStart(e, index) {
+    if (e.dataTransfer) {
+      // Check if dataTransfer exists
+      e.dataTransfer.setData('text/plain', index); // Required for some browsers
+    }
+    draggedItemIndex.current = index;
+  };
 
-    var handleDragEnd = function handleDragEnd(e) {
-        draggedItemIndex.current = null;
-    };
-    //   const handleDragOver = (e) => {
-    //     e.preventDefault();
-    //   };
+  var handleDragEnd = function handleDragEnd() {
+    draggedItemIndex.current = null;
+  };
 
-    var handleDrop = function handleDrop(e, index) {
-        if (draggedItemIndex.current !== null) {
-            var droppedIndex = parseInt(e.dataTransfer.getData('index'), 10); // Parse data to integer
-            var newItems = [].concat(_toConsumableArray(items));
-            var temp = newItems[index];
-            newItems[index] = newItems[draggedItemIndex.current];
-            newItems[draggedItemIndex.current] = temp;
-            setItems(newItems);
-        }
-    };
+  var handleDrop = function handleDrop(e, index) {
+    if (draggedItemIndex.current !== null) {
+      var newItems = [].concat(_toConsumableArray(items));
+      var temp = newItems[index];
+      newItems[index] = newItems[draggedItemIndex.current];
+      newItems[draggedItemIndex.current] = temp;
+      setItems(newItems);
+    }
+  };
 
-    var handleTouchStart = function handleTouchStart(index) {
-        draggedItemIndex.current = index;
-    };
+  var handleDragOver = function handleDragOver(e) {
+    e.preventDefault(); // Prevent default behavior for onDragOver
+  };
 
-    var handleTouchMove = function handleTouchMove(e) {};
+  var handleTouchStart = function handleTouchStart(index, touchEvent) {
+    draggedItemIndex.current = index;
+    touchStartY.current = touchEvent.touches[0].clientY;
+  };
 
-    var handleTouchEnd = function handleTouchEnd(index) {
-        if (draggedItemIndex.current !== null && draggedItemIndex.current !== index) {
-            // Handle item reordering
-        }
-        draggedItemIndex.current = null;
-    };
+  // console.error has not been solved yet => Unable to preventDefault inside passive event listener invocation.
+  var handleTouchMove = function handleTouchMove(index, touchEvent) {
+    touchEvent.preventDefault(); // Prevent default behavior for onTouchMove
+    var touchY = touchEvent.touches[0].clientY;
+    if (draggedItemIndex.current !== null && Math.abs(touchY - touchStartY.current) > 20) {
+      // Move the item only if touch movement is significant
+      var newItems = [].concat(_toConsumableArray(items));
+      var draggedIndex = draggedItemIndex.current;
+      var delta = touchY - touchStartY.current;
+      var newIndex = delta < 0 ? index - 1 : index + 1;
+      if (newIndex >= 0 && newIndex < newItems.length && newIndex !== draggedIndex) {
+        var _ref = [newItems[newIndex], newItems[draggedIndex]];
+        // Swap items
 
-    var list = items.map(function (item, index) {
-        return _react2.default.createElement(
-            'div',
-            { className: 'item',
-                draggable: true,
-                key: index,
-                onMouseDown: function onMouseDown(e) {
-                    return handleDragStart(e, index);
-                },
-                onMouseUp: handleDragEnd,
-                onDrop: function onDrop(e) {
-                    return handleDrop(e);
-                },
-                onTouchStart: function onTouchStart() {
-                    return handleTouchStart(index);
-                },
-                onTouchMove: handleTouchMove,
-                onTouchEnd: function onTouchEnd() {
-                    return handleTouchEnd(index);
-                }
-            },
-            _react2.default.createElement(_Card2.default, { key: item.id, item: item })
-        );
-    });
+        newItems[draggedIndex] = _ref[0];
+        newItems[newIndex] = _ref[1];
+
+        setItems(newItems);
+        draggedItemIndex.current = newIndex;
+        touchStartY.current = touchY;
+      }
+    }
+  };
+
+  var handleTouchEnd = function handleTouchEnd() {
+    draggedItemIndex.current = null;
+    touchStartY.current = null;
+  };
+
+  var list = items.map(function (item, index) {
     return _react2.default.createElement(
-        'div',
-        { className: 'app' },
-        _react2.default.createElement(_Navbar2.default, null),
-        list
+      'div',
+      { className: 'item',
+        draggable: true,
+        key: index,
+        onDragStart: function onDragStart(e) {
+          return handleDragStart(e, index);
+        },
+        onDragEnd: handleDragEnd,
+        onDrop: function onDrop(e) {
+          return handleDrop(e, index);
+        },
+        onDragOver: handleDragOver // Add onDragOver event handler
+
+        , onTouchStart: function onTouchStart(touchEvent) {
+          return handleTouchStart(index, touchEvent);
+        },
+        onTouchMove: function onTouchMove(touchEvent) {
+          return handleTouchMove(index, touchEvent);
+        },
+        onTouchEnd: handleTouchEnd
+      },
+      _react2.default.createElement(_Card2.default, { key: item.id, item: item })
     );
+  });
+  return _react2.default.createElement(
+    'div',
+    { className: 'app' },
+    _react2.default.createElement(_Navbar2.default, null),
+    list
+  );
 }
 
 /***/ }),
@@ -649,7 +673,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = [{
     id: 1,
-    title: "Mount Fuji",
+    title: "Mount Fujii",
     location: "Japan",
     googleMapsUrl: "https://goo.gl/maps/1DGM5WrWnATgkSNB8",
     startDate: "12 Jan, 2021",
